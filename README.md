@@ -32,3 +32,23 @@ not
 
 - in
 - not in 
+
+示例:
+
+```go
+// 运算符
+expression := "1+1-1*1/2"
+
+// 比较运算符
+expression := "1>1"
+
+//逻辑运算符
+expression := "1>1 && 1==1"
+
+// 包含表达式(现阶段只支持变量)
+expression := "'本科' in $list "
+ctx := map[string]interface{}{"list": []interface{}{"本科", "硕士"}, "age": 7, "money": float64(10)}
+
+
+
+```
