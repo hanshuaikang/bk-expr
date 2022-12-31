@@ -33,7 +33,6 @@ fragment ESC : '\\"' | '\\\\' ;
 
 container: VARIABLE;
 
-// Rules
 start : expr EOF;
 
 expr
@@ -43,6 +42,7 @@ expr
    | expr op=(GT | GE | LT | LE | EQ | NE) expr     # Compare
    | expr op=(AND | OR) expr                        # Binary
    | expr IN container                              # InExpr
+   | expr NOT IN container                          # NotIn
    | NOT expr                                       # NotExpr
    | STRING                                         # String
    | DIGIT                                          # Number

@@ -40,6 +40,10 @@ func (v *BaseExprVisitor) VisitAddSub(ctx *AddSubContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseExprVisitor) VisitNotIn(ctx *NotInContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseExprVisitor) VisitCompare(ctx *CompareContext) interface{} {
 	return v.VisitChildren(ctx)
 }

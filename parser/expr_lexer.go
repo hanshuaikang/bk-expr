@@ -101,13 +101,13 @@ var lexerLiteralNames = []string{
 }
 
 var lexerSymbolicNames = []string{
-	"", "", "", "MUL", "DIV", "ADD", "SUB", "NUMBER", "FLOAT", "WHITESPACE",
+	"", "", "", "MUL", "DIV", "ADD", "SUB", "DIGIT", "FLOAT", "WHITESPACE",
 	"GT", "GE", "LT", "LE", "EQ", "NE", "VARIABLE", "AND", "OR", "NOT", "IN",
 	"COMMA", "LBRACKET", "RBRACKET", "STRING",
 }
 
 var lexerRuleNames = []string{
-	"T__0", "T__1", "MUL", "DIV", "ADD", "SUB", "NUMBER", "FLOAT", "WHITESPACE",
+	"T__0", "T__1", "MUL", "DIV", "ADD", "SUB", "DIGIT", "FLOAT", "WHITESPACE",
 	"GT", "GE", "LT", "LE", "EQ", "NE", "VARIABLE", "AND", "OR", "NOT", "IN",
 	"COMMA", "LBRACKET", "RBRACKET", "STRING", "ESC",
 }
@@ -155,7 +155,7 @@ const (
 	ExprLexerDIV        = 4
 	ExprLexerADD        = 5
 	ExprLexerSUB        = 6
-	ExprLexerNUMBER     = 7
+	ExprLexerDIGIT      = 7
 	ExprLexerFLOAT      = 8
 	ExprLexerWHITESPACE = 9
 	ExprLexerGT         = 10

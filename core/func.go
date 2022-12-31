@@ -111,10 +111,32 @@ func ListContainsValue(val interface{}, array []interface{}, typ reflect.Type) b
 	return false
 }
 
+func ListNotContainsValue(val interface{}, array []interface{}, tpe reflect.Type) bool {
+	t := reflect.TypeOf(val)
+	var nv interface{}
+	if t.ConvertibleTo(tpe) {
+		nv = reflect.ValueOf(val).Convert(tpe).Interface()
+	}
+	for _, x := range array {
+		if x == nv {
+			return false
+		}
+	}
+	return true
+}
+
 func In(left, right interface{}) interface{} {
 	if len(right.([]interface{})) <= 0 {
 		return false
 	}
 	kind := reflect.TypeOf(right.([]interface{})[0])
 	return ListContainsValue(left, right.([]interface{}), kind)
+}
+
+func NotIn(left, right interface{}) interface{} {
+	if len(right.([]interface{})) <= 0 {
+		return false
+	}
+	kind := reflect.TypeOf(right.([]interface{})[0])
+	return ListNotContainsValue(left, right.([]interface{}), kind)
 }

@@ -149,3 +149,10 @@ func (v *ExprVisitor) VisitNotExpr(ctx *parser.NotExprContext) interface{} {
 	right := ctx.Expr().Accept(v).(Expression)
 	return &NotExpr{right: right}
 }
+
+func (v *ExprVisitor) VisitNotIn(ctx *parser.NotInContext) interface{} {
+	// not in
+	left := ctx.Expr().Accept(v).(Expression)
+	right := ctx.Container().Accept(v).(Expression)
+	return &ArrayExpr{left, right, NewOP("not in", NotIn)}
+}

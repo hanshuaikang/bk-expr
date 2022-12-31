@@ -32,6 +32,9 @@ type ExprVisitor interface {
 	// Visit a parse tree produced by ExprParser#AddSub.
 	VisitAddSub(ctx *AddSubContext) interface{}
 
+	// Visit a parse tree produced by ExprParser#NotIn.
+	VisitNotIn(ctx *NotInContext) interface{}
+
 	// Visit a parse tree produced by ExprParser#Compare.
 	VisitCompare(ctx *CompareContext) interface{}
 
