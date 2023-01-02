@@ -3,6 +3,7 @@ package core
 import (
 	"github.com/spf13/cast"
 	"reflect"
+	"time"
 )
 
 func Equal(left, right interface{}) interface{} {
@@ -22,6 +23,14 @@ func Plus(left, right interface{}) interface{} {
 }
 
 func Sub(left, right interface{}) interface{} {
+	leftKind := reflect.TypeOf(left)
+	rightKind := reflect.TypeOf(right)
+
+	if rightKind == reflect.TypeOf(time.Time{}) && leftKind == rightKind {
+		// 处理日期相减的情况
+		return int(left.(time.Time).Sub(right.(time.Time)).Hours() / 24)
+	}
+
 	l := cast.ToFloat64(left)
 	r := cast.ToFloat64(right)
 	return l - r
@@ -40,6 +49,13 @@ func Div(left, right interface{}) interface{} {
 }
 
 func compare(left, right interface{}) int {
+	leftKind := reflect.TypeOf(left)
+	rightKind := reflect.TypeOf(right)
+
+	if rightKind == reflect.TypeOf(time.Time{}) && leftKind == rightKind {
+		return int(left.(time.Time).Sub(right.(time.Time)).Hours())
+	}
+
 	if ls, ok := left.(string); ok {
 		if rs, ok := right.(string); ok {
 			if ls == rs {

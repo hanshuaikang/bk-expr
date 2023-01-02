@@ -4,6 +4,7 @@ import (
 	"github.com/TencentBlueKing/bk-expr/parser"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"strconv"
+	"time"
 )
 
 type ExprVisitor struct {
@@ -61,7 +62,7 @@ func (v *ExprVisitor) VisitAddSub(ctx *parser.AddSubContext) interface{} {
 	switch t.GetTokenType() {
 	case parser.ExprLexerADD:
 		return NewBiCalcExpr(left, right, NewOP("+", Plus))
-	case parser.ExprLexerSUB:
+	case parser.ExprLexerHYPHEN:
 		return NewBiCalcExpr(left, right, NewOP("-", Sub))
 	default:
 		panic("Temporarily unsupported operation types")
@@ -155,4 +156,10 @@ func (v *ExprVisitor) VisitNotIn(ctx *parser.NotInContext) interface{} {
 	left := ctx.Expr().Accept(v).(Expression)
 	right := ctx.Container().Accept(v).(Expression)
 	return &ArrayExpr{left, right, NewOP("not in", NotIn)}
+}
+
+func (v *ExprVisitor) VisitDATE(ctx *parser.DATEContext) interface{} {
+	length := len(ctx.GetText())
+	val, _ := time.Parse("2006-01-02", ctx.GetText()[1:length-1])
+	return NewValueExpression(val)
 }

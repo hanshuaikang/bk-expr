@@ -31,7 +31,12 @@ not
 ### 包含表达式
 
 - in
-- not in 
+- not in
+
+### 日期计算
+
+- 比较运算符
+- 日期 - 日期 = 天数
 
 示例:
 
@@ -49,6 +54,7 @@ expression := "1>1 && 1==1"
 expression := "'本科' in $list "
 ctx := map[string]interface{}{"list": []interface{}{"本科", "硕士"}, "age": 7, "money": float64(10)}
 
-
+// 日期计算
+expression := "'2022-01-21' - '2022-01-01'"
 
 ```

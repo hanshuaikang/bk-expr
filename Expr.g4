@@ -4,7 +4,7 @@ grammar Expr;
 MUL: '*';
 DIV: '/';
 ADD: '+';
-SUB: '-';
+HYPHEN: '-';
 DIGIT: [0-9]+;
 FLOAT: DIGIT? '.' DIGIT*;
 WHITESPACE: [ \r\n\t]+ -> skip;
@@ -22,9 +22,10 @@ AND: 'and' ;
 OR: 'or' ;
 NOT: 'not';
 IN: 'in';
-COMMA: ',';
-LBRACKET: '[';
-RBRACKET: ']';
+
+DATE
+    :'\'' DIGIT HYPHEN DIGIT HYPHEN DIGIT '\''
+    ;
 
 STRING
     : '\'' (ESC|.)*? '\'';
@@ -40,12 +41,13 @@ expr
    | expr op=('+'|'-') expr # AddSub
    | '(' expr ')'           # Parenthesis // 括号规则
    | expr op=(GT | GE | LT | LE | EQ | NE) expr     # Compare
-   | expr op=(AND | OR) expr                        # Binary
    | expr IN container                              # InExpr
    | expr NOT IN container                          # NotIn
    | NOT expr                                       # NotExpr
+   | expr op=(AND | OR) expr                        # Binary
    | STRING                                         # String
    | DIGIT                                          # Number
    | FLOAT                                          # Float
    | VARIABLE                                       # Variable
+   | DATE                                           # DATE
    ;
