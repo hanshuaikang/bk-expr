@@ -40,6 +40,10 @@ func (v *BaseExprVisitor) VisitFloat(ctx *FloatContext) interface{} {
 	return v.VisitChildren(ctx)
 }
 
+func (v *BaseExprVisitor) VisitFunction(ctx *FunctionContext) interface{} {
+	return v.VisitChildren(ctx)
+}
+
 func (v *BaseExprVisitor) VisitDATE(ctx *DATEContext) interface{} {
 	return v.VisitChildren(ctx)
 }

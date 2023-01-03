@@ -16,12 +16,21 @@ EQ: '==';
 NE: '!=' ;
 VARIABLE
     : '$'[a-zA-Z_] [.a-zA-Z_0-9]*
-    | '@'[a-zA-Z_] [.a-zA-Z_0-9]*
     ;
 AND: 'and' ;
 OR: 'or' ;
 NOT: 'not';
 IN: 'in';
+
+LPAREN : '(' ;
+RPAREN : ')' ;
+ARGUMENTS : TEXT (',' TEXT)* ;
+TEXT : ('a'..'z' | '0'..'9' | 'A'..'Z')+;
+
+
+FUNCTION
+    : '@'[a-zA-Z_] [.a-zA-Z_0-9]* LPAREN (ARGUMENTS (',' ARGUMENTS)*)? RPAREN
+    ;
 
 DATE
     :'\'' DIGIT HYPHEN DIGIT HYPHEN DIGIT '\''
@@ -36,6 +45,7 @@ container: VARIABLE;
 
 start : expr EOF;
 
+
 expr
    : expr op=('*'|'/') expr # MulDiv
    | expr op=('+'|'-') expr # AddSub
@@ -49,5 +59,6 @@ expr
    | DIGIT                                          # Number
    | FLOAT                                          # Float
    | VARIABLE                                       # Variable
+   | FUNCTION                                       # Function
    | DATE                                           # DATE
    ;

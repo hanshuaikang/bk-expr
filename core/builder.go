@@ -12,7 +12,11 @@ func Build(expression string, ctx map[string]interface{}) Expression {
 	p := parser.NewExprParser(stream)
 	visitor := ExprVisitor{}
 	visitor.setContext(ctx)
+	setBuiltInFunctions(visitor)
 	expr := p.Start().Accept(&visitor).(Expression)
 	return expr
+}
 
+func setBuiltInFunctions(v ExprVisitor) {
+	v.installFunction("now", &Now{})
 }

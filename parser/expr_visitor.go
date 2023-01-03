@@ -32,6 +32,9 @@ type ExprVisitor interface {
 	// Visit a parse tree produced by ExprParser#Float.
 	VisitFloat(ctx *FloatContext) interface{}
 
+	// Visit a parse tree produced by ExprParser#Function.
+	VisitFunction(ctx *FunctionContext) interface{}
+
 	// Visit a parse tree produced by ExprParser#DATE.
 	VisitDATE(ctx *DATEContext) interface{}
 

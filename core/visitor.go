@@ -1,19 +1,29 @@
 package core
 
 import (
+	"fmt"
 	"github.com/TencentBlueKing/bk-expr/parser"
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"strconv"
+	"strings"
 	"time"
 )
 
 type ExprVisitor struct {
 	parser.BaseExprVisitor
 	context map[string]interface{}
+	funcHub map[string]Function
 }
 
 func (v *ExprVisitor) setContext(ctx map[string]interface{}) {
 	v.context = ctx
+}
+
+func (v *ExprVisitor) installFunction(functionName string, function Function) {
+	if v.funcHub == nil {
+		v.funcHub = map[string]Function{}
+	}
+	v.funcHub[functionName] = function
 }
 
 func (v *ExprVisitor) getVariable(varKey string) Expression {
@@ -24,6 +34,19 @@ func (v *ExprVisitor) getVariable(varKey string) Expression {
 		panic("the variable is not in context")
 	}
 	return NewValueExpression(value)
+}
+
+func (v *ExprVisitor) getFunction(funcName string, args []string) Expression {
+	function, ok := v.funcHub[funcName]
+	if !ok {
+		panic("the function is not in context")
+	}
+	value, err := function.Execute(args)
+	if err != nil {
+		panic(fmt.Sprintf("the function is execute failed, err=%s", err))
+	}
+	return NewValueExpression(value)
+
 }
 
 func (v *ExprVisitor) VisitStart(ctx *parser.StartContext) interface{} {
@@ -162,4 +185,11 @@ func (v *ExprVisitor) VisitDATE(ctx *parser.DATEContext) interface{} {
 	length := len(ctx.GetText())
 	val, _ := time.Parse("2006-01-02", ctx.GetText()[1:length-1])
 	return NewValueExpression(val)
+}
+
+func (v *ExprVisitor) VisitFunction(ctx *parser.FunctionContext) interface{} {
+	funcName := strings.Split(ctx.GetText()[1:], "(")[0]
+	argsText := strings.TrimRight(strings.Split(ctx.GetText()[1:], "(")[1], ")")
+	argsList := strings.Split(argsText, ",")
+	return v.getFunction(funcName, argsList)
 }
