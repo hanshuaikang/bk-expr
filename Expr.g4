@@ -41,7 +41,10 @@ STRING
 
 fragment ESC : '\\"' | '\\\\' ;
 
-container: VARIABLE;
+container
+    : VARIABLE
+    | STRING
+    ;
 
 start : expr EOF;
 

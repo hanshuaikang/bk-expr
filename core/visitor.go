@@ -36,6 +36,11 @@ func (v *ExprVisitor) getVariable(varKey string) Expression {
 	return NewValueExpression(value)
 }
 
+func (v *ExprVisitor) getString(str string) Expression {
+	l := len(str)
+	return NewValueExpression(str[1 : l-1])
+}
+
 func (v *ExprVisitor) getFunction(funcName string, args []string) Expression {
 	function, ok := v.funcHub[funcName]
 	if !ok {
@@ -67,9 +72,8 @@ func (v *ExprVisitor) VisitFloat(ctx *parser.FloatContext) interface{} {
 
 func (v *ExprVisitor) VisitString(ctx *parser.StringContext) interface{} {
 	// 访问字符串
-	l := len(ctx.GetText())
 	s := ctx.GetText()
-	return NewValueExpression(s[1 : l-1])
+	return v.getString(s)
 }
 
 func (v *ExprVisitor) VisitParenthesis(ctx *parser.ParenthesisContext) interface{} {
@@ -157,6 +161,9 @@ func (v *ExprVisitor) VisitContainer(ctx *parser.ContainerContext) interface{} {
 	// 访问容器
 	if ctx.VARIABLE() != nil {
 		return v.getVariable(ctx.VARIABLE().GetText())
+	}
+	if ctx.STRING() != nil {
+		return v.getString(ctx.STRING().GetText())
 	}
 	return nil
 }

@@ -52,9 +52,12 @@ expression := "1>1"
 //逻辑运算符
 expression := "1>1 && 1==1"
 
-// 包含表达式(现阶段只支持变量)
+// 包含表达式(现阶段只支持变量和字符串)
 expression := "'本科' in $list "
 ctx := map[string]interface{}{"list": []interface{}{"本科", "硕士"}}
+
+// 字符串in计算
+expression := "'本科' in '本科再往上是研究生' "
 
 // 日期计算
 expression := "'2022-01-21' - '2022-01-01'" //result: 20天

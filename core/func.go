@@ -3,6 +3,7 @@ package core
 import (
 	"github.com/spf13/cast"
 	"reflect"
+	"strings"
 	"time"
 )
 
@@ -127,6 +128,10 @@ func ListContainsValue(val interface{}, array []interface{}, typ reflect.Type) b
 	return false
 }
 
+func StringContainsValue(left string, right string) bool {
+	return strings.Contains(right, left)
+}
+
 func ListNotContainsValue(val interface{}, array []interface{}, tpe reflect.Type) bool {
 	t := reflect.TypeOf(val)
 	var nv interface{}
@@ -142,6 +147,15 @@ func ListNotContainsValue(val interface{}, array []interface{}, tpe reflect.Type
 }
 
 func In(left, right interface{}) interface{} {
+
+	leftKind := reflect.TypeOf(left)
+	rightKind := reflect.TypeOf(right)
+
+	if leftKind == rightKind && leftKind == reflect.TypeOf("") {
+		// 如果左右都是字符串类型，则执行字符串判断操作
+		return StringContainsValue(left.(string), right.(string))
+	}
+
 	if len(right.([]interface{})) <= 0 {
 		return false
 	}
@@ -150,8 +164,17 @@ func In(left, right interface{}) interface{} {
 }
 
 func NotIn(left, right interface{}) interface{} {
+
+	leftKind := reflect.TypeOf(left)
+	rightKind := reflect.TypeOf(right)
+
+	if leftKind == rightKind && leftKind == reflect.TypeOf("") {
+		// 如果左右都是字符串类型，则执行字符串判断操作
+		return !StringContainsValue(left.(string), right.(string))
+	}
+
 	if len(right.([]interface{})) <= 0 {
-		return false
+		return true
 	}
 	kind := reflect.TypeOf(right.([]interface{})[0])
 	return ListNotContainsValue(left, right.([]interface{}), kind)
