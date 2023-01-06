@@ -68,18 +68,11 @@ func compare(left, right interface{}) int {
 			return 1
 		}
 	}
+
+	left, right = covertFloat64(left, right)
+
 	if ls, ok := left.(float64); ok {
 		if rs, ok := right.(float64); ok {
-			return int(ls - rs)
-		}
-	}
-	if ls, ok := left.(int64); ok {
-		if rs, ok := right.(int64); ok {
-			return int(ls - rs)
-		}
-	}
-	if ls, ok := left.(uint64); ok {
-		if rs, ok := right.(uint64); ok {
 			return int(ls - rs)
 		}
 	}
